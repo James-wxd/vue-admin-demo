@@ -3,18 +3,20 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">
+          <img src="@/assets/common/login-logo.png" alt="">
+        </h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="usermobile"
+          v-model="loginForm.mobile"
+          placeholder="手机号"
+          name="mobile"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -30,7 +32,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -44,8 +46,8 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
+        <span style="margin-right:20px;">mobile: 13800000002</span>
+        <span> password: 123456</span>
       </div>
 
     </el-form>
@@ -53,33 +55,42 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-
+// import { validUsername } from '@/utils/validate'
+// 导入校验手机号
+import { validMobile } from '@/utils/validate'
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
+    // 这里后端服务需要校验的是手机号码 所以我们的校验规则也要发生变化
+    const validateMobile = (rule, value, callback) => {
+      // 这里就是开始的校验规则
+      // 译为当我们的校验规则不正确是那么我们的回调函数就会跑出错误提示不正确的用户名字否则就是正确的
+      // 我们可以再这里优化写法 可以使用三元表达式进行书写
+      // if (!validateMobile(value)) {
+      //   callback(new Error('Please enter the correct user name'))
+      // } else {
+      //   callback()
+      // }
+      // 三元表达式写法如下:
+      console.log('123', '这里会触发合法性代码mobile')
+      validMobile(value) ? callback() : callback(new Error('请输入正确的手机号码'))
     }
     const validatePassword = (rule, value, callback) => {
+      console.log('123', '这里会触发合法性代码psd')
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码应该要超过6位数'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        mobile: '13800000002',
+        password: '123456'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        mobile: [{ required: true, trigger: 'blur', message: '手机号格式不正确' }, { validator: validateMobile, trigger: 'blur' }],
+        password: [{ required: true, trigger: 'blur', message: '密码长度在6-16位之间' }, { validator: validatePassword, trigger: 'blur' }]
       },
       loading: false,
       passwordType: 'password',
@@ -106,6 +117,7 @@ export default {
       })
     },
     handleLogin() {
+      console.log('触发登录')
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -130,7 +142,7 @@ export default {
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg:#283443;
-$light_gray:#fff;
+$light_gray:#68b0fe; //输入狂修改为蓝色
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
@@ -141,6 +153,8 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+  background-image: url('~@/assets/common/login.jpg'); //设置背景图片
+  background-position: center; //设置样式位置 position 设置为上右下左都为中心
   .el-input {
     display: inline-block;
     height: 47px;
@@ -165,9 +179,13 @@ $cursor: #fff;
 
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.7); // 输入登录表单的背景色
     border-radius: 5px;
     color: #454545;
+  }
+  // 设置当用户输入字体错误的时候那么我们需要修改错误提示
+  .el-form-item__error {
+    color:#fff
   }
 }
 </style>

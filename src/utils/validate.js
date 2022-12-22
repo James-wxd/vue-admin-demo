@@ -9,7 +9,10 @@
 export function isExternal(path) {
   return /^(https?:|mailto:|tel:)/.test(path)
 }
-
+// 创建一个校验函数校验手机号码
+export function validMobile(str) {
+  return /^1[3-9]\d{9}$/.test(str) // 校验手机号
+}
 /**
  * @param {string} str
  * @returns {Boolean}
