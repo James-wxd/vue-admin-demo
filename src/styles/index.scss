@@ -3,11 +3,10 @@
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
-@import './common.scss' ;//引入新样式
-
+@import './common.scss' ;//导入公共样式
 body {
   height: 100%;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; 
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;

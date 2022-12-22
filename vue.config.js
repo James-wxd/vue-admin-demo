@@ -1,3 +1,4 @@
+console.log(process.env, '2222')
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
@@ -35,6 +36,14 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    // 配置代理跨域因为本地无法请求我们需要的服务器地址所以我们要进行代理跨域
+    proxy: {
+      // 进行代理跨域配置
+      '/api': {
+        target: 'http://ihrm-java.itheima.net', // 跨域请求地址 当本地请求服务的时候带/api 那么就会把api加到这个url后面 这也就是常说的nginx方向代理 这个操作可以在webpack 配置里面进行操作
+        changeOrigin: true // 设置为true 表示开启了跨域
+      }
     }
   },
   configureWebpack: {
