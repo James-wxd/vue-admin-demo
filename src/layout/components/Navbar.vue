@@ -1,29 +1,30 @@
 <template>
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
-    <breadcrumb class="breadcrumb-container" />
+    <div class="app-breadcrumb">
+      杭州科顿科技有限公司
+      <span class="breadBtn">体验版</span>
+    </div>
+    <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          <img src="@/assets/common/bigUserHeader.png" class="user-avatar">
+          <span class="name">管理员</span>
+          <i class="el-icon-caret-bottom" style="color: #fff;" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              Home
+              首页
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
+          <a target="_blank" href="https://baike.baidu.com/item/%E6%9D%AD%E5%B7%9E%E7%A7%91%E9%A1%BF%E6%99%BA%E8%83%BD%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/22707258?fr=aladdin">
+            <el-dropdown-item>公司百科</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+            <span style="display:block;">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -33,12 +34,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
+// import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
-    Breadcrumb,
+    // Breadcrumb,
     Hamburger
   },
   computed: {
@@ -60,11 +61,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.app-breadcrumb {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 50px;
+  margin-left: 10px;
+  color: #ffffff;
+  cursor: text;
+  .breadBtn {
+    background: #84a9fe;
+    font-size: 14px;
+    padding: 0 10px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 10px;
+    margin-left: 15px;
+  }
+}
 .navbar {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
+  // background: #fff;
+  background-image: -webkit-linear-gradient(left, #3d6df8, #5b8cff);
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
@@ -122,7 +142,16 @@ export default {
           cursor: pointer;
           width: 40px;
           height: 40px;
-          border-radius: 10px;
+          border-radius: 15px;
+          vertical-align: middle;
+        }
+        .user-dropdown {
+           color: #fff;
+        }
+        .name {
+          color: #fff;
+          vertical-align: middle;
+          margin-left:5px;
         }
 
         .el-icon-caret-bottom {
