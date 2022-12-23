@@ -24,11 +24,11 @@ export default {
     async login(context, data) {
       const result = await login(data) // await 后面实际上会返回一个promis对象
       console.log(result)
-      if (result.data.success) {
+      //  因为我们使用了 axios 相应拦截器 所以在我们拿到response的时候我们进行了 响应数据的过滤操作
       //  判断我们的token已经成功了那么我们需要做处理token操作了
-        // 调用mutation方法进行token创建
-        context.commit('setToken', result.data.data)
-      }
+      // 调用mutation方法进行token创建
+      // request 相应拦截器 过滤data操作 所以这里的result就是data
+      context.commit('setToken', result)
     }
   }
 }

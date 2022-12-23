@@ -13,10 +13,11 @@ service.interceptors.request.use() // 创建一个请求拦截器
 service.interceptors.response.use(
   function(response) {
     // 数据解构进行处理正确相应
-    const { success, message } = response.data
+    console.log(response, 'response')
+    const { success, message, data } = response.data
     if (success) {
       Message.success('登录成功')
-      return response
+      return data
     } else {
       Message.error(message)
     }

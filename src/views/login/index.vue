@@ -58,6 +58,8 @@
 // import { validUsername } from '@/utils/validate'
 // 导入校验手机号
 import { validMobile } from '@/utils/validate'
+// 引入全局vue action
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   data() {
@@ -97,6 +99,9 @@ export default {
       redirect: undefined
     }
   },
+  computed: {
+
+  },
   watch: {
     $route: {
       handler: function(route) {
@@ -106,6 +111,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['user/login']),
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -116,24 +122,23 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    async handleLogin() {
       console.log('触发登录')
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate(async valid => {
         if (valid) {
-          this.loading = true
-          console.log('触发')
-          console.log(this.loginForm)
-          this.$store.dispatch('user/login', this.loginForm)
-
-          // this.$store.dispatch('user/login', this.loginForm).then(() => {
-          this.$router.push({ path: this.redirect || '/' })
-          //   this.loading = false
-          // }).catch(() => {
-          //   this.loading = false
-          // })
-        } else {
-          console.log('error submit!!')
-          return false
+          // try catch and finally 这样的写法结构和很清晰
+          try {
+            this.loading = true
+            console.log('触发')
+            console.log(this.loginForm)
+            // await this.$store.dispatch('user/login', this.loginForm) 两种方法都可以
+            await this['user/login'](this.loginForm)
+            this.$router.push('/')
+          } catch (error) {
+            console.log(error)
+          } finally {
+            this.loading = false
+          }
         }
       })
     }
