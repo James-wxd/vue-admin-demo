@@ -1,64 +1,42 @@
-// import router from './router'
-// import store from './store'
-// import { Message } from 'element-ui'
-// import NProgress from 'nprogress' // progress bar
-// import 'nprogress/nprogress.css' // progress bar style
-// import { getToken } from '@/utils/auth' // get token from cookie
-// import getPageTitle from '@/utils/get-page-title'
 
-// NProgress.configure({ showSpinner: false }) // NProgress Configuration
+// 在这里我们需要处理路由导航问题 意思就是我们在登录页面的时候我们需要判断用户行为
+// 进行路由处理导入router文件
+import router from '@/router/index'
+// 导入vue store实例进行token 判断
+import store from '@/store/index'
+// 导入进度条插件进行进度条处理
+import nProgress from 'nprogress'
+// 导入样式
+import 'nprogress/nprogress.css'
+const whiteList = ['/login', '/404'] // 定义白名单，意思就是登录页面和404页面不受权限路由的页面
+router.beforeEach(function(to, from, next) {
+  nProgress.start()
+  //   判断我们token是否存在
+  console.log(store.getters, '222222222222222')
+  if (store.getters.token) {
+    // console.log('2')
+    console.log(store.getters)
+    // 判断是否导航是从login 开始的 如果是的那我们就放行让其调到主页 在路由导航里面我们的path'./' 就是主页面
+    if (to.path === '/login') {
+      console.log('2')
+      next('/')
+    } else {
+      next()
+    }
+  } else {
+    console.log('走到这里的白名单进行登录处理')
+    if (whiteList.indexOf(to.path) > -1) {
+      // 如果是在白名单里面 我们可以直接放行 意思是我们在登录页面 或者404页面
+      next()
+    } else {
+      // 如果没有token 也没在白名单里面 那么我们如果要手动输入其他路由页面，那么我们就要导航到登录页面
+      next('./login')
+    }
+  }
+  //   触发进度条完成后
+  nProgress.done()
+})// 定义路由前置守卫
+router.afterEach(function(to, from, next) {
+  nProgress.done()
+}) // 定义路由后置守卫
 
-// const whiteList = ['/login'] // no redirect whitelist
-
-// router.beforeEach(async(to, from, next) => {
-//   // start progress bar
-//   NProgress.start()
-
-//   // set page title
-//   document.title = getPageTitle(to.meta.title)
-
-//   // determine whether the user has logged in
-//   const hasToken = getToken()
-
-//   if (hasToken) {
-//     if (to.path === '/login') {
-//       // if is logged in, redirect to the home page
-//       next({ path: '/' })
-//       NProgress.done()
-//     } else {
-//       const hasGetUserInfo = store.getters.name
-//       if (hasGetUserInfo) {
-//         next()
-//       } else {
-//         try {
-//           // get user info
-//           await store.dispatch('user/getInfo')
-
-//           next()
-//         } catch (error) {
-//           // remove token and go to login page to re-login
-//           await store.dispatch('user/resetToken')
-//           Message.error(error || 'Has Error')
-//           next(`/login?redirect=${to.path}`)
-//           NProgress.done()
-//         }
-//       }
-//     }
-//   } else {
-//     /* has no token*/
-
-//     if (whiteList.indexOf(to.path) !== -1) {
-//       // in the free login whitelist, go directly
-//       next()
-//     } else {
-//       // other pages that do not have permission to access are redirected to the login page.
-//       next(`/login?redirect=${to.path}`)
-//       NProgress.done()
-//     }
-//   }
-// })
-
-// router.afterEach(() => {
-//   // finish progress bar
-//   NProgress.done()
-// })

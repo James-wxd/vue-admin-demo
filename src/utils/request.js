@@ -1,6 +1,10 @@
 import axios from 'axios'
 // 导入message 模块进行处理数据
 import { Message } from 'element-ui'
+// 导入进度条插件
+// import nProgress from 'nprogress'
+// // 导入样式
+// import 'nprogress/nprogress.css' // 引入进度条样式
 // 创建一个axios 实例
 const service = axios.create({
 //  配置公共的请求接口
@@ -9,7 +13,10 @@ const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 5000
 })
-service.interceptors.request.use() // 创建一个请求拦截器
+service.interceptors.request.use(function(config) {
+  // nProgress.start()
+  return config
+}) // 创建一个请求拦截器
 service.interceptors.response.use(
   function(response) {
     // 数据解构进行处理正确相应
@@ -17,6 +24,7 @@ service.interceptors.response.use(
     const { success, message, data } = response.data
     if (success) {
       Message.success('登录成功')
+      // nProgress.done()
       return data
     } else {
       Message.error(message)
