@@ -8,7 +8,7 @@ export function login(data) {
   })
 }
 
-export function getuserInfo() {
+export function getUserInfo() {
   return request({
     method: 'post',
     url: '/sys/profile'
