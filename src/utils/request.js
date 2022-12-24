@@ -1,3 +1,4 @@
+import store from '@/store'
 import axios from 'axios'
 // 导入message 模块进行处理数据
 import { Message } from 'element-ui'
@@ -15,6 +16,13 @@ const service = axios.create({
 })
 service.interceptors.request.use(function(config) {
   // nProgress.start()
+  // 因为获取用户资料我们需要请求headers 对象里面添加请求头 token 所以我们需要在请求拦截器里面做处理
+
+  if (store.getters.token) {
+    console.log('123')
+    config.headers['Authorization'] = `Bearer ${store.getters.token}`
+  }
+  console.log(config, 'config123')
   return config
 }) // 创建一个请求拦截器
 service.interceptors.response.use(

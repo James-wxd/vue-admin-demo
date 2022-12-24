@@ -15,10 +15,10 @@ router.beforeEach(function(to, from, next) {
   console.log(store.getters, '222222222222222')
   if (store.getters.token) {
     // console.log('2')
-    console.log(store.getters)
+    console.log(store.getters, '这里触发函数')
     // 判断是否导航是从login 开始的 如果是的那我们就放行让其调到主页 在路由导航里面我们的path'./' 就是主页面
     if (to.path === '/login') {
-      console.log('2')
+      console.log('从这里触发to 到 dashboard')
       next('/')
     } else {
       next()
@@ -30,7 +30,7 @@ router.beforeEach(function(to, from, next) {
       next()
     } else {
       // 如果没有token 也没在白名单里面 那么我们如果要手动输入其他路由页面，那么我们就要导航到登录页面
-      next('./login')
+      next('/login')
     }
   }
   //   触发进度条完成后
