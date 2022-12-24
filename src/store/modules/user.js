@@ -1,5 +1,5 @@
 // 通过es6的写法导入我们需要的cookie设置方法
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setTimeTap } from '@/utils/auth'
 // 导入axios封装的函数
 import { getUserInfo, login, getUserDetails } from '@/api/user'
 // 使用vuex 和前端缓存相结合
@@ -40,6 +40,8 @@ export default {
       // 调用mutation方法进行token创建
       // request 相应拦截器 过滤data操作 所以这里的result就是data
       context.commit('setToken', result)
+      // 创建当前时间戳
+      setTimeTap()
     },
     // 获取用户资料action
     async getuserInfo(context) {
