@@ -11,10 +11,14 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
-
+import * as directive from './directive/index'
 import '@/icons' // icon
 import '@/permission' // permission control
-
+Object.keys(directive).forEach(function(key) {
+  console.log(key, '=============', directive[key], '111111111111111111')
+  Vue.directive(key, directive[key])
+})
+// console.log(directive)
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

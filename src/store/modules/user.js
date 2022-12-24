@@ -1,7 +1,7 @@
 // 通过es6的写法导入我们需要的cookie设置方法
 import { getToken, setToken, removeToken } from '@/utils/auth'
 // 导入axios封装的函数
-import { getUserInfo, login } from '@/api/user'
+import { getUserInfo, login, getUserDetails } from '@/api/user'
 // 使用vuex 和前端缓存相结合
 export default {
   namespaced: true,
@@ -45,9 +45,20 @@ export default {
     async getuserInfo(context) {
       // 通过async 和 await 获取异步请求任务
       const result = await getUserInfo()
+      // 获取用户的基本信息
+      const baseInfo = await getUserDetails(result.userId)
+      // 合并两个对象
+      const baseResult = { ...result, ...baseInfo }
+      console.log(baseInfo, 'baseInfo')
       console.log(result, 'getuserinfo')
-      context.commit('setUserInfo', result)
-      return result
+      context.commit('setUserInfo', baseResult)
+      return baseResult
+    },
+    //  实现用户登出功能
+    logout(context) {
+      // 清楚token，并且清除用户信息
+      context.commit('removeToken')
+      context.commit('removeUserInfo')
     }
 
   }

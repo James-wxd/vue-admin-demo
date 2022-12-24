@@ -9,7 +9,7 @@ import nProgress from 'nprogress'
 // 导入样式
 import 'nprogress/nprogress.css'
 const whiteList = ['/login', '/404'] // 定义白名单，意思就是登录页面和404页面不受权限路由的页面
-router.beforeEach(function(to, from, next) {
+router.beforeEach(async function(to, from, next) {
   nProgress.start()
   //   判断我们token是否存在
   console.log(store.getters, '222222222222222')
@@ -21,6 +21,13 @@ router.beforeEach(function(to, from, next) {
       console.log('从这里触发to 到 dashboard')
       next('/')
     } else {
+      // 我们需要在这里处理我们需要的userinfo 用户信息
+      if (!store.getters.userId) {
+        // console.log(store.getters, '触发store getter userinfo')
+        // 这里会触发我们需要的数据 所以我们在这里进行vuex 异步处理函数
+        // 因为我们需要处理异步请求函数所以我们需要在这里使用把异步转换成同步的方法 要不然我们拿不到数据 使用async await
+        await store.dispatch('user/getuserInfo')
+      }
       next()
     }
   } else {

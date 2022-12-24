@@ -31,7 +31,7 @@ service.interceptors.response.use(
     console.log(response, 'response')
     const { success, message, data } = response.data
     if (success) {
-      Message.success('登录成功')
+      // Message.success('登录成功')
       // nProgress.done()
       return data
     } else {

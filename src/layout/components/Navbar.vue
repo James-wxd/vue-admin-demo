@@ -10,8 +10,9 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar">
-          <span class="name">管理员</span>
+          <!-- 将我们的src 变成动态数据 -->
+          <img v-imageError="defaultImg" :src="staffPhoto" class="user-avatar">
+          <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff;" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -36,16 +37,24 @@
 import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-
+import { Message } from 'element-ui'
+// import * as directive from '@/directive/index'
 export default {
   components: {
     // Breadcrumb,
     Hamburger
   },
+  data() {
+    return {
+      defaultImg: require('@/assets/common/head.jpg')
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'name',
+      'staffPhoto'
     ])
   },
   methods: {
@@ -56,8 +65,13 @@ export default {
       // await this.$store.dispatch('user/logout')
       // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
       console.log('123')
+      // this.$store.dispatch('user/getuserInfo')
+      console.log(this.staffPhoto)
+      // console.log(directive.imageError, '11111111111111')
+      // console.log(Object.keys(directive))
+      this.$store.dispatch('user/logout')
       this.$router.push('/login')
-      this.$store.dispatch('user/getuserInfo')
+      Message.success('登出成功')
     }
   }
 }
