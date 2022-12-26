@@ -1,6 +1,7 @@
 <template>
   <div :class="{'has-logo':showLogo}">
     <logo v-if="showLogo" :collapse="isCollapse" />
+    <!-- <button @click="test">{{ message }}</button> -->
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -15,7 +16,9 @@
         <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
+
   </div>
+
 </template>
 
 <script>
@@ -23,9 +26,21 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
-
+import { asyncRoutes } from '@/router/index'
 export default {
   components: { SidebarItem, Logo },
+  data() {
+    return {
+      message: '点击识别路由'
+    }
+  },
+  methods: {
+    test() {
+      console.log('123')
+      console.log(this.$router)
+      console.log(asyncRoutes)
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar'
