@@ -10,14 +10,17 @@
         :props="defaultProps"
       >
         <!-- 我们需要封装公共的组件以便后面我们需要更更好的去维护 -->
-        <treeToolsVue slot-scope="{data}" :tree-node="data" />
+        <treeToolsVue slot-scope="{data}" :tree-node="data" @delDeparment="getDeparments" />
       </el-tree>
     </el-card>
+    <button @click="testData">测试数据</button>
   </div>
 
 </template>
 <script>
 import treeToolsVue from './component/tree-tools.vue'
+import { getDeparments } from '@/api/daparments'
+import { tranListToTreeData } from '@/utils/index'
 export default {
   name: 'Departments',
   components: {
@@ -29,22 +32,7 @@ export default {
         name: '科顿科技有限公司',
         manager: '负责人'
       },
-      deparment: [{
-        name: '总裁办',
-        manager: '王巡东',
-        children: [{
-          name: '董事会',
-          manager: '曹操1'
-        }]
-      }, { name: '行政部',
-        manager: '曹操2',
-        children: [{
-          name: '人事部',
-          manager: '曹操3'
-        }]
-      },
-      { name: '行政部', manager: '刘备' },
-      { name: '人事部', manager: '孙权' }],
+      deparment: [],
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -52,11 +40,24 @@ export default {
     }
   },
   created() {
+    this.getDeparments()
   },
   mounted() {
   },
   methods: {
+    async testData() {
+      console.log('test success')
+      const res = await getDeparments()
+      console.log(res)
+    },
+    async getDeparments() {
+      const res = await getDeparments()
+      console.log(res, '获取组织结构数据成功')
+      this.deparment = tranListToTreeData(res.depts, '')
+      console.log(this.deparment)
+    }
   }
+
 }
 </script>
 <style >

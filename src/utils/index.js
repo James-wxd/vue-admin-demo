@@ -8,6 +8,28 @@
  * @param {string} cFormat
  * @returns {string | null}
  */
+// 封装递归算法
+/** *
+ *
+ *  将列表型的数据转化成树形数据 => 递归算法 => 自身调用自身 => 一定条件不能一样， 否则就会死循环
+ *  遍历树形 有一个重点 要先找一个头儿
+ * ***/
+//  实际上的写法就是双重for 循环 两者有关联 外面循环满足条件之后那么进行对比 嵌套关系，外面循环一次 里面循环15次 然后和外面第一次做对比 之后的循环也是遵循这个原理
+export function tranListToTreeData(list, rootValue) {
+  var arr = []
+  list.forEach(item => {
+    if (item.pid === rootValue) {
+      // 找到之后 就要去找 item 下面有没有子节点
+      const children = tranListToTreeData(list, item.id)
+      if (children.length) {
+        // 如果children的长度大于0 说明找到了子节点
+        item.children = children
+      }
+      arr.push(item) // 将内容加入到数组中
+    }
+  })
+  return arr
+}
 export function parseTime(time, cFormat) {
   if (arguments.length === 0 || !time) {
     return null

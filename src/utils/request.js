@@ -32,7 +32,7 @@ service.interceptors.request.use(function(config) {
     }
     config.headers['Authorization'] = `Bearer ${store.getters.token}`
   }
-  console.log(config, 'config123')
+  console.log(config, 'request 请求拦截器')
   return config
 }) // 创建一个请求拦截器
 service.interceptors.response.use(
