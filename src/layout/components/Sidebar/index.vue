@@ -1,7 +1,7 @@
 <template>
   <div :class="{'has-logo':showLogo}">
     <logo v-if="showLogo" :collapse="isCollapse" />
-    <!-- <button @click="test">{{ message }}</button> -->
+    <button @click="test">{{ message }}</button>
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -13,6 +13,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
+        <!-- 这个是admin 的sidebar 控制组件 -->
         <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
@@ -34,18 +35,12 @@ export default {
       message: '点击识别路由'
     }
   },
-  methods: {
-    test() {
-      console.log('123')
-      console.log(this.$router)
-      console.log(asyncRoutes)
-    }
-  },
   computed: {
     ...mapGetters([
       'sidebar'
     ]),
     routes() {
+      // 这里的routes 属性就是从全局的配置路由拿到的
       return this.$router.options.routes
     },
     activeMenu() {
@@ -65,6 +60,13 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
+    }
+  },
+  methods: {
+    test() {
+      console.log('123')
+      console.log(this.$router)
+      console.log(asyncRoutes)
     }
   }
 }
