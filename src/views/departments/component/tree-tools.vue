@@ -24,17 +24,14 @@
         </el-col>
       </el-row>
     </el-col>
-    <addDepartment :dialog-visible="showDialog" @closeDialog="closeDialog" />
   </el-row>
 </template>
 <script>
 import { delDepartments } from '@/api/daparments'
-import addDepartment from './add-department.vue'
 // 导入组件
 export default {
   name: 'TreeTools',
   components: {
-    addDepartment
   },
   props: {
     treeNode: {
@@ -59,11 +56,15 @@ export default {
     handleCommand(type) {
       console.log('触发事件' + type)
       if (type === 'add') {
-        this.showDialog = true
         console.log('1')
+        // 这里触发自定义事件
+        this.$emit('addepart', this.treeNode)
+        // console.log(this.treeNode)
       } else if (type === 'edit') {
         console.log('2')
+        this.$emit('editDepts', this.treeNode)
       } else {
+        console.log(this.treeNode)
         this.$confirm('确认删除此部门嘛', '确认信息', {
           distinguishCancelAndClose: true,
           confirmButtonText: '确定',
