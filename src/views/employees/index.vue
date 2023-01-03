@@ -1,15 +1,51 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      <h2>员工管理</h2>
+      <!-- <h2>员工管理</h2> -->
+      <!-- 这里我们将放入需要的全局注册组件 -->
+      <globalTools>
+        <template v-slot:before> <!--两种写法 一种是 v-slot:before 一种是 slot="before"-->
+          <span>12222条记录</span>
+        </template>
+      </globalTools>
+      <el-card>
+        <el-table border>
+          <el-table-column label="序号" sortable="" />
+          <el-table-column label="姓名" sortable="" />
+          <el-table-column label="工号" sortable="" />
+          <el-table-column label="聘用形式" sortable="" />
+          <el-table-column label="部门" sortable="" />
+          <el-table-column label="入职时间" sortable="" />
+          <el-table-column label="账户状态" sortable="" />
+          <el-table-column label="操作" sortable="" fixed="right" width="280">
+            <template>
+              <el-button type="text" size="small">查看</el-button>
+              <el-button type="text" size="small">转正</el-button>
+              <el-button type="text" size="small">调岗</el-button>
+              <el-button type="text" size="small">离职</el-button>
+              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- 分页组件 -->
+        <el-row type="flex" justify="center" align="middle" style="height: 60px">
+          <el-pagination layout="prev, pager, next" />
+        </el-row>
+      </el-card>
+      <button @click="testData">测试</button>
     </div>
   </div>
 </template>
 <script>
+
 export default {
   name: 'Employees',
+  components: {
+  },
   data() {
     return {
+      showBefore: true
     }
   },
   created() {
@@ -17,6 +53,9 @@ export default {
   mounted() {
   },
   methods: {
+    testData() {
+      console.log('123')
+    }
   }
 }
 </script>

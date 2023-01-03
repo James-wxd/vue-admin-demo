@@ -13,7 +13,7 @@
         <treeToolsVue slot-scope="{data}" :tree-node="data" @delDeparment="getDeparments" @addepart="addepart" @editDepts="editDepts" />
       </el-tree>
     </el-card>
-    <button @click="testData">测试数据</button>
+    <!-- <button @click="testData">测试数据</button> -->
     <addDepartment ref="formdata" :dialog-visible="showDialog" :tree-node="node" v-bind="$attrs" @closeDialog="closeDialog" @addDepart="getDeparments" />
   </div>
 
@@ -90,4 +90,7 @@ export default {
     padding: 30px  140px;
     font-size:14px;
     }
+    .dashboard-container {
+    background-color: #f0f2f5
+  }
 </style>

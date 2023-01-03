@@ -9,3 +9,10 @@ export default {
   name: 'App'
 }
 </script>
+<style>
+  .app-main {
+    /* overflow:initial !important; */
+    background-color: #f0f2f5
+
+  }
+</style>

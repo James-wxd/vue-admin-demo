@@ -21,5 +21,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+ .dashboard-container {
+    background-color: #f0f2f5
+  }
 </style>
