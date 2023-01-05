@@ -76,8 +76,8 @@
         <!-- 底部 -->
         <el-row slot="footer" type="flex" justify="center">
           <el-col :span="6">
-            <el-button size="small" @click="btnCancel('roleForm')">取消</el-button>
             <el-button size="small" type="primary" @click="btnOK('roleForm')">确定</el-button>
+            <el-button size="small" @click="btnCancel('roleForm')">取消</el-button>
           </el-col>
         </el-row>
       </el-dialog>

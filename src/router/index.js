@@ -51,7 +51,30 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
+  {
+    path: '/import',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'import',
+      component: () => import ('@/components/uploadexcel'),
+      hidden: true
+    }]
+  },
+  {
+    path: '/details/:id',
+    component: Layout, // query传参 动态路由传参
+    children: [{
+      path: '',
+      component: () => import('@/views/employees/details'),
+      hidden: true,
+      // 不在左侧菜单显示
+      meta: {
+        title: '员工详情' // 标记当前路由规则的中文名称 后续在做左侧菜单时 使用
+      }
+    }]
 
+  },
   {
     path: '/',
     component: Layout,
@@ -65,6 +88,7 @@ export const constantRoutes = [
   },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
+
 ]
 // 导入动态路由
 export const asyncRoutes = [
