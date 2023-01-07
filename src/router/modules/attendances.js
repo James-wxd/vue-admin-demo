@@ -13,5 +13,25 @@ export default {
       icon: 'el-icon-time'
     //   <i class="el-icon-time" />
     }
-  }]
+  },
+  {
+    path: 'archiving',
+    component: () => import('@/views/attendances/historical'),
+    name: 'archiving',
+    hidden: true,
+    meta: {
+      title: '归档'
+    }
+  },
+  {
+    path: 'report/:month',
+    component: () => import('@/views/attendances/report'),
+    name: 'reports',
+    hidden: true,
+    meta: {
+      title: '报表'
+    }
+  }
+
+  ]
 }

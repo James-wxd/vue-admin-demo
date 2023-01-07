@@ -2,6 +2,7 @@
 import { getToken, setToken, removeToken, setTimeTap } from '@/utils/auth'
 // 导入axios封装的函数
 import { getUserInfo, login, getUserDetails } from '@/api/user'
+import { resetRouter } from '@/router/index'
 // 使用vuex 和前端缓存相结合
 export default {
   namespaced: true,
@@ -61,6 +62,11 @@ export default {
       // 清楚token，并且清除用户信息
       context.commit('removeToken')
       context.commit('removeUserInfo')
+      // 这里我们应该让路由重置
+      resetRouter()
+      // 同时也要把vuex的数据给清空掉
+      context.commit('permission/setRoutes', [], { root: true })
+      // 子模块调用子模块的action 可以 将 commit的第三个参数 设置成  { root: true } 就表示当前的context不是子模块了 而是父模块
     }
 
   }

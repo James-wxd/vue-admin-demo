@@ -34,7 +34,7 @@ router.beforeEach(async function(to, from, next) {
         // console.log(routes, '2222222222222222222222222222')
         // const routes1 = [{ path: '/name' }]
         // console.log(routes, 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
-        router.addRoutes(routes)
+        router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }])
 
         next(to.path)
       }
