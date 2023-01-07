@@ -26,6 +26,7 @@ service.interceptors.request.use(function(config) {
     // 在这里我们需要判断token 是否失效
     if (isCheckTimeTap()) {
       // 如果超过时间戳 那我们就调用logout 方法清空token
+      Message.error('toekn 超时请重新登陆')
       store.dispatch('user/logout')
       // 调用router 返回到登录页面
       router.push('/login')

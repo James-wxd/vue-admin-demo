@@ -46,3 +46,11 @@ export function updateRole(data) {
     data
   })
 }
+// // 根据id 删除角色
+export function assignPrem(data) {
+  return request({
+    method: 'PUT',
+    url: `/sys/role/assignPrem`,
+    data
+  })
+}

@@ -4,7 +4,7 @@
     <el-card>
       <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="12">
-          <div v-if="showBefore" class="before">
+          <div v-if="showBeforeIcon" class="before">
             <i class="el-icon-info" />
             <!-- 定义前面得插槽 -->
             <slot name="before" />
@@ -28,6 +28,10 @@ export default {
   name: 'GlobalTools',
   props: {
     showBefore: {
+      type: [Boolean],
+      default: false
+    },
+    showBeforeIcon: {
       type: [Boolean],
       default: false
     }

@@ -3,7 +3,7 @@
     <div class="app-container">
       <!-- <h2>员工管理</h2> -->
       <!-- 这里我们将放入需要的全局注册组件 -->
-      <globalTools :show-before="showComponent=true">
+      <globalTools :show-before="showComponent=true" :show-before-icon="showComponent=true">
         <template v-slot:before> <!--两种写法 一种是 v-slot:before 一种是 slot="before"-->
           <span>12222条记录</span>
         </template>
@@ -33,7 +33,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
               <el-button type="text" size="small" @click="delEemployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -46,6 +46,8 @@
       <button @click="testData">测试</button>
     </div>
     <AddDemployee :show-dialog.sync="showDialog" @btnCancel="showDialog=false" />
+    <!-- 放置角色分配组件 -->
+    <assignRoleVue ref="assignRole" :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
   </div>
 
 </template>
@@ -55,10 +57,12 @@ import { getEmployeeList, delEmployee } from '@/api/employees'
 import AddDemployee from './component/add-employee.vue'
 import { formatDate } from '@/filters/index'
 import EmployeeEnum from '@/api/constant/employees'
+import assignRoleVue from './component/assign-role.vue'
 export default {
   name: 'Employees',
   components: {
-    AddDemployee
+    AddDemployee,
+    assignRoleVue
   },
   data() {
     return {
@@ -68,8 +72,10 @@ export default {
         size: 10,
         total: null
       },
+      userId: null,
       loading: false,
-      showDialog: false
+      showDialog: false,
+      showRoleDialog: false
     }
   },
   created() {
@@ -187,6 +193,11 @@ export default {
     },
     routerDetails(id) {
       this.$router.push(`/details/${id}`)
+    },
+    async  editRole(id) {
+      this.userId = id // props传值 是异步的
+      await this.$refs.assignRole.getUserDetailById(id) // 父组件调用子组件方法
+      this.showRoleDialog = true
     }
 
   }

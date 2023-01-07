@@ -26,7 +26,17 @@ router.beforeEach(async function(to, from, next) {
         // console.log(store.getters, '触发store getter userinfo')
         // 这里会触发我们需要的数据 所以我们在这里进行vuex 异步处理函数
         // 因为我们需要处理异步请求函数所以我们需要在这里使用把异步转换成同步的方法 要不然我们拿不到数据 使用async await
-        await store.dispatch('user/getuserInfo')
+        const { roles } = await store.dispatch('user/getuserInfo')
+        // 本质的业务逻辑就是我们在登录页面没有数据的时候 就需要我们做动态权限路由
+        console.log(roles, '处理我们需要的动态路由')
+        // 调用我们需要的perimission 异步函数
+        const routes = await store.dispatch('permission/addRouters', roles.menus)
+        // console.log(routes, '2222222222222222222222222222')
+        // const routes1 = [{ path: '/name' }]
+        // console.log(routes, 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
+        router.addRoutes(routes)
+
+        next(to.path)
       }
       next()
     }

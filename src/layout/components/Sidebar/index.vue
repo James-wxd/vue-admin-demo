@@ -37,12 +37,12 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar', 'routes'
     ]),
-    routes() {
-      // 这里的routes 属性就是从全局的配置路由拿到的
-      return this.$router.options.routes
-    },
+    // routes() {
+    //   // 这里的routes 属性就是从全局的配置路由拿到的
+    //   return this.$router.options.routes
+    // },
     activeMenu() {
       const route = this.$route
       const { meta, path } = route

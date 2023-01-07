@@ -21,7 +21,7 @@
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
                 <template slot-scope="scope">
-                  <el-button size="small" type="text" @click="handleAllot(scope)">分配权限</el-button>
+                  <el-button size="small" type="text" @click="handleAllot(scope.row.id)">分配权限</el-button>
                   <el-button size="small" type="text" @click="handleEdit(scope.row.id)">编辑</el-button>
                   <el-button size="small" type="text" @click="handleDelete(scope.row.id)">删除</el-button>
                 </template>
@@ -88,10 +88,36 @@
         copyright@ 科顿科技版权所有
       </p>
     </div>
+    <el-dialog title="分配权限" :visible="showPermDialog" @close="btnPermCancel">
+      <!-- 权限是一颗树 -->
+      <!-- 将数据绑定到组件上 -->
+      <!-- check-strictly 如果为true 那表示父子勾选时  不互相关联 如果为false就互相关联 -->
+      <!-- id作为唯一标识 -->
+      <el-tree
+        ref="permTree"
+        :data="permData"
+        :props="defaultProps"
+        :show-checkbox="true"
+        :check-strictly="true"
+        :default-expand-all="true"
+        :default-checked-keys="selectCheck"
+        node-key="id"
+      />
+      <!-- 确定 取消 -->
+      <el-row slot="footer" type="flex" justify="center">
+        <el-col :span="6">
+          <el-button type="primary" size="small" @click="btnPermOK">确定</el-button>
+          <el-button size="small" @click="btnPermCancel">取消</el-button>
+        </el-col>
+      </el-row>
+      <button @click="testElTree">test el-tree</button>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { getRoleList, getRoleDetail, addRole, delRole, updateRole } from '@/api/setting'
+import { getRoleList, getRoleDetail, addRole, delRole, updateRole, assignPrem } from '@/api/setting'
+import { getPermissionList } from '@/api/permission'
+import { tranListToTreeData } from '@/utils'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Setting',
@@ -113,6 +139,7 @@ export default {
 
       },
       showDialog: false,
+      showPermDialog: false,
       rules: {
         name: [
           { required: true, message: '名字不能为空', trigger: 'blur' },
@@ -122,8 +149,15 @@ export default {
           { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
         ]
       },
-      loading: false
-
+      loading: false,
+      permData: [
+      ],
+      defaultProps: {
+        children: 'children',
+        label: 'name'
+      },
+      roleId: null,
+      selectCheck: null
     }
   },
   computed: {
@@ -139,6 +173,10 @@ export default {
   mounted() {
   },
   methods: {
+    testElTree() {
+      console.log('1')
+      console.log(this.$refs.permTree.getCheckedKeys())
+    },
     async testData() {
       const res = await getRoleList(
         { page: this.page.page, pagesize: this.page.pagesize })
@@ -165,8 +203,28 @@ export default {
       this.tableData = rows
       this.loading = false
     },
-    handleAllot(scope) {
-      console.log(scope)
+    async handleAllot(id) {
+      console.log(id, '获取权限点')
+      const res = tranListToTreeData(await getPermissionList(), '0')
+      this.permData = res
+      this.roleId = id
+      // 获取用户的个人详情 里面存在这个用户已经存在的权限点
+      const { permIds } = await getRoleDetail(id)
+      console.log(permIds, '已经存在的权限点')
+      this.selectCheck = permIds
+      this.showPermDialog = true
+    },
+    async  btnPermOK() {
+      await assignPrem({
+        permIds: this.$refs.permTree.getCheckedKeys(),
+        id: this.roleId
+      })
+      this.$message.success('分配角色成功')
+      this.showPermDialog = false
+    },
+    btnPermCancel() {
+      this.selectCheck = null
+      this.showPermDialog = false
     },
     async handleDelete(id) {
       this.loading = true
@@ -183,13 +241,14 @@ export default {
       this.roleForm = await getRoleDetail(id)
       this.showDialog = true
     },
-    btnCancel() {
+    btnCancel(formName) {
       setTimeout(() => {
         this.roleForm = {
           name: '',
           description: ''
         }
       }, 500)
+      this.$refs[formName].resetFields()
       this.showDialog = false
     },
     async  btnOK(formName) {
