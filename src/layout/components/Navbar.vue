@@ -1,13 +1,19 @@
 <template>
   <div class="navbar">
+    <!-- <button>123</button> -->
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <div class="app-breadcrumb">
       杭州科顿科技有限公司
       <span class="breadBtn">体验版</span>
     </div>
+    <!-- <screenFull /> -->
     <!-- <breadcrumb class="breadcrumb-container" /> -->
+    <!-- <screen-full class="right-menu-item" /> -->
 
     <div class="right-menu">
+      <languageVue class="right-menu-item" />
+      <theme-picker class="right-menu-item" />
+      <screenFull class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- 将我们的src 变成动态数据 -->
@@ -78,6 +84,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.right-menu-item{
+  vertical-align: middle;
+  // margin-right:3px
+}
 .app-breadcrumb {
   display: inline-block;
   font-size: 18px;
@@ -136,7 +146,7 @@ export default {
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: text-bottom;
+      // vertical-align: text-bottom;
 
       &.hover-effect {
         cursor: pointer;

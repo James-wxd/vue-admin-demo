@@ -48,6 +48,11 @@
     <AddDemployee :show-dialog.sync="showDialog" @btnCancel="showDialog=false" />
     <!-- 放置角色分配组件 -->
     <assignRoleVue ref="assignRole" :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
+    <div class="buttom">
+      <p class="'buttom-font'">
+        copyright@ 科顿科技版权所有
+      </p>
+    </div>
   </div>
 
 </template>
@@ -92,7 +97,9 @@ export default {
       // })
       // console.log(res)
       // console.log(this.tableData)
-      console.log(EmployeeEnum)
+      // console.log(EmployeeEnum)
+      // console.log(AddDemployee)
+      console.log(this.$echarts)
     },
     async  getEmployeeList() {
       // console.log('123')
@@ -204,5 +211,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+.buttom{
+    text-align: center;
+    color: #848587;
+    font-size: 14px;
+    font-family:monospace;
+    position: relative;
+    top:13px
+  }
 </style>

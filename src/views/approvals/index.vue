@@ -60,6 +60,11 @@
         </el-row>
       </el-card>
     </div>
+    <div class="buttom">
+      <p class="'buttom-font'">
+        copyright@ 科顿科技版权所有
+      </p>
+    </div>
   </div>
 </template>
 
@@ -120,4 +125,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .buttom{
+    text-align: center;
+    color: #848587;
+    font-size: 14px;
+    font-family:monospace;
+    position: relative;
+    top:13px
+  }
+</style>
 

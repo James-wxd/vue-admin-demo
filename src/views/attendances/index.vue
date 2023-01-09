@@ -7,7 +7,7 @@
         <template v-slot:before>有 {{ attendInfo.tobeTaskCount }} 条考勤审批尚未处理</template>
         <template v-slot:after>
           <el-button size="mini" type="danger" @click="$router.push('/import?type=attendance')">导入</el-button>
-          <el-button size="mini" type="warning">提醒</el-button>
+          <el-button size="mini" type="warning" @click="remind">提醒</el-button>
           <el-button size="mini" type="primary" @click="handleSet">设置</el-button>
           <el-button size="mini" type="default" @click="$router.push('/attendances/archiving/')">历史归档</el-button>
           <el-button size="mini" type="primary" @click="$router.push({'path':'/attendances/report/'+ yearMonth})">{{ yearMonth }}报表</el-button>
@@ -129,24 +129,29 @@
         </el-row>
       </el-card>
     </div>
-    <el-card>
-      <!-- 提醒组件 -->
-      <el-dialog
-        title="提醒"
-        :visible.sync="tipsDialogVisible"
-        width="280px"
-        center
-      >
-        <div class="attenInfo">
-          <p>系统将通过邮件与短信的形式，对全体员工中存在旷工的考勤进行提醒，该提醒每月仅可发送 1 次。</p>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="handleSub">我知道了</el-button>
-          <el-button @click="centerDialogVisible = false">取消</el-button>
-        </span>
-      </el-dialog>
-      <!-- 设置组件 -->
-      <attendance-set ref="set" @handleCloseModal="handleCloseModal" /></el-card></div>
+    <!-- 提醒组件 -->
+    <el-dialog
+      title="提醒"
+      :visible.sync="tipsDialogVisible"
+      width="280px"
+      center
+    >
+      <div class="attenInfo">
+        <p>系统将通过邮件与短信的形式，对全体员工中存在旷工的考勤进行提醒，该提醒每月仅可发送 1 次。</p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleSub">我知道了</el-button>
+        <el-button @click="centerDialogVisible = false">取消</el-button>
+      </span>
+    </el-dialog>
+    <!-- 设置组件 -->
+    <attendance-set ref="set" @handleCloseModal="handleCloseModal" />
+    <div class="buttom">
+      <p class="'buttom-font'">
+        copyright@ 科顿科技版权所有
+      </p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -168,6 +173,7 @@ export default {
       monthOfReport: '',
       centerDialogVisible: false,
       tipsDialogVisible: false,
+      showCard: false,
       month: '',
       yearMonth: '',
       loading: false,
@@ -204,6 +210,10 @@ export default {
     this.getDeparments() // 获取考勤列表
   },
   methods: {
+    remind() {
+      this.showCard = true
+      this.tipsDialogVisible = true
+    },
     // 暂时不处理
     handleSub() {
       this.tipsDialogVisible = false
@@ -273,7 +283,15 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style  lang="scss" scoped>
+.buttom{
+    text-align: center;
+    color: #848587;
+    font-size: 14px;
+    font-family:monospace;
+    position: relative;
+    top:13px
+  }
   .tableInfo {
     line-height: 36px;
     border: solid 1px #ebeef5;

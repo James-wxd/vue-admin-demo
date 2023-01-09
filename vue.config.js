@@ -25,6 +25,8 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
+  // 这个是screen的插件问题
+  transpileDependencies: ['screenfull'],
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
@@ -129,3 +131,4 @@ module.exports = {
       )
   }
 }
+
